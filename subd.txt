@@ -1,0 +1,585 @@
+#include <stdio.h>
+#include <string>
+#include <ctype.h>
+
+struct valorant_chars {
+	char name[10];
+	char specification[15];
+	int age;
+	char country[10];
+}A[30];
+
+struct svalorant_chars {
+	char sname[10];
+	char sspecification[15];
+	int sage;
+	char scountry[10];
+}B[30];
+
+void file_writing(int num) {
+	FILE* bb;
+	int n, j, size;
+	char word[15];
+	fopen_s(&bb, "a.txt", "w");
+	for (n = 0; n < num; n++) {
+		size = strlen(A[n].name);
+		for (j = 0; j < size; j++)
+			fprintf(bb, "%c", A[n].name[j]);
+		fprintf(bb, " ");
+		size = strlen(A[n].specification);
+		for (j = 0; j < size; j++)
+			fprintf(bb, "%c", A[n].specification[j]);
+		fprintf(bb, " ");
+		fprintf(bb, "%d", A[n].age);
+		fprintf(bb, " ");
+		size = strlen(A[n].country);
+		for (j = 0; j < size; j++)
+			fprintf(bb, "%c", A[n].country[j]);
+		fprintf(bb, "\n");
+	}
+	printf("Uspeshno zapisano v file a as TXT\n\n");
+	fclose(bb);
+}
+
+int file_writing_dat(int num) {
+	FILE* bb;
+	fopen_s(&bb, "tt.dat", "wb");
+	fwrite(&num, sizeof(int), 1, bb);
+	fwrite(A, sizeof(valorant_chars), 30, bb);
+	fclose(bb);
+	printf("Uspeshno sohraneno v file tt as DAT\n\n");
+	return 1;
+}
+
+void SUBD_creating(int len, int new_strings) {//тут пишем строки и добавляем
+	int num = len, save, chose;
+
+	for (num; num < new_strings; num++) {
+		printf("Vvedite imya persa\n\n");
+		scanf_s("%s", A[num].name, 10);
+		printf("Vvedite class persa\n\n");
+		scanf_s("%s", A[num].specification, 15);
+		printf("Vvedite vozrast persa\n\n");
+		scanf_s("%d", &A[num].age);
+		printf("Vvedite stranu persa\n\n");
+		scanf_s("%s", A[num].country, 10);
+	}
+	printf("Sohranit rezultati vvoda v file?\n1. Da\n2. Net\n\n");
+	scanf_s("%d", &save);
+	while (save < 1 || save>2) {
+		printf("Viberite norm znachenie\n\n");
+		scanf_s("%d", &save);
+	}
+	if (save == 1) {
+		printf("As txt or as dat?\n1. TXT\n2. DAT\n\n");
+		scanf_s("%d", &chose);
+		while (chose < 1 || chose > 2) {
+			printf("Vvedite norm znachenie");
+			scanf_s("%d", &chose);
+		}
+		if (chose == 1)
+			file_writing(num);
+		else if (chose == 2)
+			file_writing_dat(num);
+	}
+		
+	else
+		printf("Ok\n\n");
+}
+
+int vvod_file(int len) {
+	FILE* bb;
+	fopen_s(&bb, "tt.dat", "r+");
+	fread(&len, sizeof(int), 1, bb);
+	if (len == 0)
+		len = fread(A, sizeof(valorant_chars), 30, bb);
+	else 
+		fread(A, sizeof(valorant_chars), 30, bb);
+	return len;
+}
+
+void up_table() {
+	int k;
+	printf("%c", 201);
+	for (k = 0; k < 6; k++)
+		printf("%c", 205);
+	printf("%c", 203);
+	for (k = 0; k < 15; k++)
+		printf("%c", 205);
+	printf("%c", 203);
+	for (k = 0; k < 19; k++)
+		printf("%c", 205);
+	printf("%c", 203);
+	for (k = 0; k < 7; k++)
+		printf("%c", 205);
+	printf("%c", 203);
+	for (k = 0; k < 15; k++)
+		printf("%c", 205);
+	printf("%c\n", 187);
+	printf("%c Num %2c     Name %6c  Classification %3c  Age %2c    Country %4c\n", 186, 186, 186, 186, 186, 186);
+	printf("%c", 204);
+	for (k = 0; k < 6; k++)
+		printf("%c", 205);
+	printf("%c", 206);
+	for (k = 0; k < 15; k++)
+		printf("%c", 205);
+	printf("%c", 206);
+	for (k = 0; k < 19; k++)
+		printf("%c", 205);
+	printf("%c", 206);
+	for (k = 0; k < 7; k++)
+		printf("%c", 205);
+	printf("%c", 206);
+	for (k = 0; k < 15; k++)
+		printf("%c", 205);
+	printf("%c\n", 185);
+}
+
+void down_table() {
+	int k;
+	printf("%c", 200);
+	for (k = 0; k < 6; k++)
+		printf("%c", 205);
+	printf("%c", 202);
+	for (k = 0; k < 15; k++)
+		printf("%c", 205);
+	printf("%c", 202);
+	for (k = 0; k < 19; k++)
+		printf("%c", 205);
+	printf("%c", 202);
+	for (k = 0; k < 7; k++)
+		printf("%c", 205);
+	printf("%c", 202);
+	for (k = 0; k < 15; k++)
+		printf("%c", 205);
+	printf("%c\n\n", 188);
+}
+
+void SUBD_vivod(int len) {//тут вывод всего
+	int i, k;
+	if (len == 0)
+		printf("Nicho ne zapisano\n\n");
+	else {
+		up_table();
+		for (i = 0; i < len; i++)
+			printf("%c %2d %3c %-13s %-3c %-15s %-1c %3d %3c %-13s %c\n", 186, i + 1, 186, A[i].name, 186, A[i].specification, 186, A[i].age, 186, A[i].country, 186);
+		down_table();
+	}
+}
+
+void SUBD_B_vivod(int len) {//тут вывод сортеда
+	int i, k;
+	if (len == 0)
+		printf("Nicho ne zapisano\n\n");
+	else {
+		up_table();
+		for (i = 0; i < len; i++)
+			printf("%c %2d %3c %-13s %-3c %-15s %-1c %3d %3c %-13s %c\n", 186, i + 1, 186, B[i].sname, 186, B[i].sspecification, 186, B[i].sage, 186, B[i].scountry, 186);
+		down_table();
+	}
+}
+
+
+
+int sorted(int ifind_key, int len) {
+	int i = 0, k, rez = 1, z;
+
+	for (k = 0; k < 10; k++) {
+		B[0].sname[k] = A[0].name[k];
+		B[0].scountry[k] = A[0].country[k];
+	}
+	B[0].sage = A[0].age;
+	for (k = 0; k < 15; k++)
+		B[0].sspecification[k] = A[0].specification[k];
+
+	if (ifind_key == 1) {
+		for (i = 1; i < len; i++) {
+			z = i + 1;
+			if (strcmp(A[i].name, A[i - 1].name) > 0 || strcmp(A[i].name, A[i - 1].name) == 0 || len == 1) {
+				for (k = 0; k < 10; k++) {
+					B[i].sname[k] = A[i].name[k];
+					B[i].scountry[k] = A[i].country[k];
+				}
+				B[i].sage = A[i].age;
+				for (k = 0; k < 15; k++)
+					B[i].sspecification[k] = A[i].specification[k];
+			}
+			else {
+				while (strcmp(A[z - 1].name, A[z - 2].name) < 0 || z > 1) {
+					for (k = 0; k < 10; k++) {
+						B[z - 1].sname[k] = A[z - 2].name[k];
+						B[z - 1].scountry[k] = A[z - 2].country[k];
+					}
+
+					B[z - 1].sage = A[z - 2].age;
+					for (k = 0; k < 15; k++)
+						B[z - 1].sspecification[k] = A[z - 2].specification[k];
+					z--;
+				}
+			}
+			for (k = 0; k < 10; k++) {
+				B[z - 1].sname[k] = A[i].name[k];
+				B[z - 1].scountry[k] = A[i].country[k];
+			}
+			B[z - 1].sage = A[i].age;
+			for (k = 0; k < 15; k++)
+				B[z - 1].sspecification[k] = A[i].specification[k];
+		}
+	}
+
+	else if (ifind_key == 2) {
+		for (i = 1; i < len; i++) {
+			z = i + 1;
+			if (strcmp(A[i].specification, A[i - 1].specification) > 0 || strcmp(A[i].specification, A[i - 1].specification) == 0 || len == 1) {
+				for (k = 0; k < 10; k++) {
+					B[i].sname[k] = A[i].name[k];
+					B[i].scountry[k] = A[i].country[k];
+				}
+				B[i].sage = A[i].age;
+				for (k = 0; k < 15; k++)
+					B[i].sspecification[k] = A[i].specification[k];
+			}
+			else {
+				while (strcmp(A[z - 1].specification, A[z - 2].specification) < 0 || z > 1) {
+					for (k = 0; k < 10; k++) {
+						B[z - 1].sname[k] = A[z - 2].name[k];
+						B[z - 1].scountry[k] = A[z - 2].country[k];
+					}
+
+					B[z - 1].sage = A[z - 2].age;
+					for (k = 0; k < 15; k++)
+						B[z - 1].sspecification[k] = A[z - 2].specification[k];
+					z--;
+				}
+			}
+			for (k = 0; k < 10; k++) {
+				B[z - 1].sname[k] = A[i].name[k];
+				B[z - 1].scountry[k] = A[i].country[k];
+			}
+			B[z - 1].sage = A[i].age;
+			for (k = 0; k < 15; k++)
+				B[z - 1].sspecification[k] = A[i].specification[k];
+		}
+	}
+	else if (ifind_key == 4) {
+		for (i = 1; i < len; i++) {
+			z = i + 1;
+			if (strcmp(A[i].country, A[i - 1].country) > 0 || strcmp(A[i].country, A[i - 1].country) == 0 || len == 1) {
+				for (k = 0; k < 10; k++) {
+					B[i].sname[k] = A[i].name[k];
+					B[i].scountry[k] = A[i].country[k];
+				}
+				B[i].sage = A[i].age;
+				for (k = 0; k < 15; k++)
+					B[i].sspecification[k] = A[i].specification[k];
+			}
+			else {
+				while (strcmp(A[z - 1].country, A[z - 2].country) < 0 || z > 1) {
+					for (k = 0; k < 10; k++) {
+						B[z - 1].sname[k] = A[z - 2].name[k];
+						B[z - 1].scountry[k] = A[z - 2].country[k];
+					}
+
+					B[z - 1].sage = A[z - 2].age;
+					for (k = 0; k < 15; k++)
+						B[z - 1].sspecification[k] = A[z - 2].specification[k];
+					z--;
+				}
+			}
+			for (k = 0; k < 10; k++) {
+				B[z - 1].sname[k] = A[i].name[k];
+				B[z - 1].scountry[k] = A[i].country[k];
+			}
+			B[z - 1].sage = A[i].age;
+			for (k = 0; k < 15; k++)
+				B[z - 1].sspecification[k] = A[i].specification[k];
+		}
+	}
+
+	else if (ifind_key == 3) {
+		for (i = 1; i < len; i++) {
+			z = i + 1;
+			if (A[i].age > A[i - 1].age || A[i].age == A[i - 1].age || len == 1) {
+				for (k = 0; k < 10; k++) {
+					B[i].sname[k] = A[i].name[k];
+					B[i].scountry[k] = A[i].country[k];
+				}
+				B[i].sage = A[i].age;
+				for (k = 0; k < 15; k++)
+					B[i].sspecification[k] = A[i].specification[k];
+			}
+			else {
+				while (A[i].age < A[i - 1].age || z > 1) {
+					for (k = 0; k < 10; k++) {
+						B[z - 1].sname[k] = A[z - 2].name[k];
+						B[z - 1].scountry[k] = A[z - 2].country[k];
+					}
+
+					B[z - 1].sage = A[z - 2].age;
+					for (k = 0; k < 15; k++)
+						B[z - 1].sspecification[k] = A[z - 2].specification[k];
+					z--;
+				}
+			}
+			for (k = 0; k < 10; k++) {
+				B[z - 1].sname[k] = A[i].name[k];
+				B[z - 1].scountry[k] = A[i].country[k];
+			}
+			B[z - 1].sage = A[i].age;
+			for (k = 0; k < 15; k++)
+				B[z - 1].sspecification[k] = A[i].specification[k];
+		}
+	}
+
+	SUBD_B_vivod(len);
+
+	return rez;
+}
+
+int SUBD_finding(char finding_name[10], int len, int age, int ifind_key) {
+	int i, k, rez = 0, flag;
+
+	up_table();
+
+	if (ifind_key == 3) {
+		for (i = 0; i < len; i++)
+			if (A[i].age == age) {
+				printf("%c %2d %3c %-13s %-3c %-15s %-1c %3d %3c %-13s %c\n", 186, i + 1, 186, A[i].name, 186, A[i].specification, 186, A[i].age, 186, A[i].country, 186);
+				rez += 1;
+			}
+		for (i = 0; i < len; i++)
+			if (A[i].age != age) {
+				printf("%c %2d %3c %-13s %-3c %-15s %-1c %3d %3c %-13s %c\n", 186, i + 1, 186, A[i].name, 186, A[i].specification, 186, A[i].age, 186, A[i].country, 186);
+				rez += 1;
+			}
+	}
+	else if (ifind_key == 1) {
+		for (i = 0; i < len; i++) {
+			flag = 1;
+			for (k = 0; k < 10; k++) {
+				if (A[i].name[k] == finding_name[k])
+					flag += 1;
+				else
+					flag = -10;
+			}
+			if (flag > 0)
+				printf("%c %2d %3c %-13s %-3c %-15s %-1c %3d %3c %-13s %c\n", 186, i + 1, 186, A[i].name, 186, A[i].specification, 186, A[i].age, 186, A[i].country, 186);
+			rez += 1;
+		}
+		for (i = 0; i < len; i++) {
+			flag = 1;
+			for (k = 0; k < 10; k++) {
+				if (A[i].name[k] == finding_name[k])
+					flag -= 10;
+				else
+					flag = 1000;
+			}
+			if (flag > 0)
+				printf("%c %2d %3c %-13s %-3c %-15s %-1c %3d %3c %-13s %c\n", 186, i + 1, 186, A[i].name, 186, A[i].specification, 186, A[i].age, 186, A[i].country, 186);
+			rez += 1;
+		}
+	}
+	else if (ifind_key == 2) {
+		for (i = 0; i < len; i++) {
+			flag = 1;
+			for (k = 0; k < 10; k++) {
+				if (A[i].specification[k] == finding_name[k])
+					flag += 1;
+				else
+					flag = -10;
+			}
+			if (flag > 0)
+				printf("%c %2d %3c %-13s %-3c %-15s %-1c %3d %3c %-13s %c\n", 186, i + 1, 186, A[i].name, 186, A[i].specification, 186, A[i].age, 186, A[i].country, 186);
+			rez += 1;
+		}
+		for (i = 0; i < len; i++) {
+			flag = 1;
+			for (k = 0; k < 10; k++) {
+				if (A[i].specification[k] == finding_name[k])
+					flag -= 10;
+				else
+					flag = 1000;
+			}
+			if (flag > 0)
+				printf("%c %2d %3c %-13s %-3c %-15s %-1c %3d %3c %-13s %c\n", 186, i + 1, 186, A[i].name, 186, A[i].specification, 186, A[i].age, 186, A[i].country, 186);
+			rez += 1;
+		}
+	}
+
+	else if (ifind_key == 4) {
+		for (i = 0; i < len; i++) {
+			flag = 1;
+			for (k = 0; k < 10; k++) {
+				if (A[i].country[k] == finding_name[k])
+					flag += 1;
+				else
+					flag = -10;
+			}
+			if (flag > 0)
+				printf("%c %2d %3c %-13s %-3c %-15s %-1c %3d %3c %-13s %c\n", 186, i + 1, 186, A[i].name, 186, A[i].specification, 186, A[i].age, 186, A[i].country, 186);
+			rez += 1;
+		}
+		for (i = 0; i < len; i++) {
+			flag = 1;
+			for (k = 0; k < 10; k++) {
+				if (A[i].country[k] == finding_name[k])
+					flag -= 10;
+				else
+					flag = 1000;
+			}
+			if (flag > 0)
+				printf("%c %2d %3c %-13s %-3c %-15s %-1c %3d %3c %-13s %c\n", 186, i + 1, 186, A[i].name, 186, A[i].specification, 186, A[i].age, 186, A[i].country, 186);
+			rez += 1;
+		}
+	}
+
+	down_table();
+
+	return rez;
+}
+
+int main() {
+	int chose = 0, i, j, num, len = 0, new_strings = 0, k, ifind_key = 0, age = -1, rez, file_ent;
+	char finding_name[10];
+
+	while (chose != 7) {
+		printf("%c", 201);
+		for (k = 0; k < 18; k++)
+			printf("%c", 205);
+		printf("%c\n", 187);
+		printf("%c Viberite functiu %c\n", 186, 186);
+		printf("%c", 204);
+		for (k = 0; k < 18; k++)
+			printf("%c", 205);
+		printf("%c\n", 185);
+
+		printf("%c 1. Vvod %10c\n", 186, 186);
+		printf("%c 2. Vivod %9c\n", 186, 186);
+		printf("%c 3. Dobavlenie %4c\n", 186, 186);
+		printf("%c 4. Poisk %9c\n", 186, 186);
+		printf("%c 5. Udalenie %6c\n", 186, 186);
+		printf("%c 6. Sortirovka %4c\n", 186, 186);
+		printf("%c 7. Exit %10c\n", 186, 186);
+		printf("%c 8. Chistka %7c\n", 186, 186);
+
+		printf("%c", 200);
+		for (k = 0; k < 18; k++)
+			printf("%c", 205);
+		printf("%c\n", 188);
+
+		scanf_s("%d", &chose);
+		while (chose < 1 || chose>8) {
+			printf("Vvedite chislo ot 1 do 7\n\n");
+			scanf_s("%d", &chose);
+		}
+		if (chose == 7)
+			printf("Thats end");
+		else if (chose == 1) {
+			printf("Iz file ili is consoli?\n1. Console\n2. file\n\n");
+			scanf_s("%d", &file_ent);
+			while (file_ent > 2 || file_ent < 1) {
+				printf("Viberi 1 ili 2");
+				scanf_s("%d", &file_ent);
+			}
+			if (file_ent == 1) {
+				printf("Vvedite len spiska\n\n");
+				len = 0;
+				scanf_s("%d", &new_strings);
+				while (new_strings < 1 || new_strings>25) {
+					printf("Stolko bit ne nozhet\n\n");
+					scanf_s("%d", &new_strings);
+				}
+				SUBD_creating(len, new_strings);
+				len = new_strings;
+			}
+			else if (file_ent == 2) {
+				len = vvod_file(len);
+			}
+		}
+		else if (chose == 2) {
+			SUBD_vivod(len);
+		}
+		else if (chose == 3) {
+			printf("Vvedite kolichestvo novih strok\n\n");
+			scanf_s("%d", &new_strings);
+			while (new_strings < 1 || new_strings>25) {
+				printf("Stolko bit ne nozhet\n\n");
+				scanf_s("%d", &new_strings);
+			}
+			new_strings += len;
+			SUBD_creating(len, new_strings);
+			len = new_strings;
+		}
+		else if (chose == 4) {
+			if (len == 0)
+				printf("Ne v chem iskat\n\n");
+			else {
+				printf("Chto Ischem?\n1. Name\n2. Specification\n3. Age\n4. Country\n\n");
+				scanf_s("%d", &ifind_key);
+				while (ifind_key < 1 || ifind_key > 4) {
+					printf("Wrong key, po novoi\n\n");
+					scanf_s("%d", &ifind_key);
+				}
+				if (ifind_key == 1 || ifind_key == 2 || ifind_key == 4) {
+					printf("Vvedite kluch poiska\n\n");
+					scanf_s("%s", finding_name, 10);
+					rez = SUBD_finding(finding_name, len, age, ifind_key);
+				}
+				else {
+					printf("Vvedite kluch poiska\n\n");
+					scanf_s("%d", &age);
+					if (age < 1 || age > 100)
+						printf("Samiy umniy? Nu ok\n\n");
+					rez = SUBD_finding(finding_name, len, age, ifind_key);
+				}
+				if (rez == 0)
+					printf("Nothing found\n\n");
+				else
+					printf("Results of poisk\n\n");
+			}
+		}
+
+		else if (chose == 5) {
+			if (len == 0)
+				printf("Nechego udalyat\n\n");
+			else {
+				printf("Vvedite N stroki\n\n");
+				scanf_s("%d", &num);
+				while (num<0 || num>len) {
+					printf("Takoi stroki net, vvedite drugoi nomer\n\n");
+					scanf_s("%d", &num);
+				}
+
+				i = num;
+				while (i < len) {
+					for (j = 0; j < 10; j++)
+						A[i - 1].name[j] = A[i].name[j];
+					for (j = 0; j < 10; j++)
+						A[i - 1].specification[j] = A[i].specification[j];
+					A[i].age = A[i + 1].age;
+					for (j = 0; j < 10; j++)
+						A[i - 1].country[j] = A[i].country[j];
+					i++;
+				}
+				len = len - 1;
+				printf("Uspeshno udaleno\n\n");
+			}
+		}
+		else if (chose == 6) {
+			if (len == 0)
+				printf("Nechego sortirovat\n\n");
+			else {
+				printf("Po chemu sortiruem?\n1. Name\n2. Specification\n3. Age\n4. Country\n\n");
+				scanf_s("%d", &ifind_key);
+				while (ifind_key < 1 || ifind_key>4) {
+					printf("Nevernoe chislo\n\n");
+					scanf_s("%d", &ifind_key);
+				}
+				rez = sorted(ifind_key, len);
+			}
+		}
+
+		else if (chose == 8)
+			printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+	}
+}
